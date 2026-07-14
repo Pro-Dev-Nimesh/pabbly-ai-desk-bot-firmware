@@ -25,10 +25,17 @@ Seeed **XIAO ESP32-S3** · **INMP441** I²S mic · **MAX98357A** amp + speaker �
 | I²S amp BCLK / LRC / DIN | D8 / D9 / D10 | MAX98357A |
 | Touch | D3 | copper pad |
 
+## What the device does
+- **Animated face** — blinking eyes + a mouth that moves while it speaks (lip-sync from audio level); scales to the OLED size.
+- **Standby** — shows the bot's name and a live **clock** (NTP) with idle blinking eyes.
+- **Onboarding** — on first boot it **speaks its pairing code aloud** and shows it on screen.
+- Touch-to-talk (interim); the spoken **"Pabbly"** wake word is a later stage.
+
 ## Before you flash
 Open `firmware/config.h` and set:
-- `DEFAULT_SERVER` → your deployed Worker URL from **pabbly-ai-desk-bot-server** (e.g. `https://voice-buddy.<you>.workers.dev`, no trailing slash)
+- `DEFAULT_SERVER` → your deployed Worker URL from **pabbly-ai-desk-bot-server** (e.g. `https://pabbly-ai-desk-bot.<you>.workers.dev`, no trailing slash)
 - `DEFAULT_TOKEN`  → the same `DEVICE_TOKEN` you set on that Worker
+- `GMT_OFFSET_SEC` → your timezone offset for the standby clock (default +5:30 India)
 
 ## Flash it — two ways
 **A) Browser flasher (easiest)** — once GitHub Pages is enabled (Settings → Pages → Source = GitHub Actions),
@@ -40,10 +47,10 @@ open `firmware/voicebot.ino`, set **Tools → PSRAM → OPI PSRAM**, and Upload.
 *(PlatformIO: open `firmware/` and Upload.)*
 
 ## First-time device setup (like Xiaozhi)
-1. Power on → the OLED says **"Join 'VoiceBuddy-Setup'"**.
+1. Power on → the OLED says **"Join 'Pabbly-Setup'"**.
 2. Join that Wi-Fi on your phone → pick your home Wi-Fi → confirm Server URL + Device Token → save.
-3. The device shows a **6-digit code** → enter it in the web console (from the server repo) to claim it.
-4. Touch the pad and talk. Re-open setup later by holding the pad while powering on.
+3. The device **speaks and shows a 6-digit code** → sign in to the web console (server repo) and enter it to claim the bot.
+4. Touch the pad and talk. Re-open Wi-Fi setup later by holding the pad while powering on, or from the console's **Change Wi-Fi** button.
 
 ## Calibration
 Serial @ 115200. Tune `TOUCH_THRESHOLD` (watch the idle value) and `MIC_GAIN_SHIFT` (lower = louder) in `config.h`.
