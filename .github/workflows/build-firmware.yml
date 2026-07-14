@@ -1,0 +1,63 @@
+name: Build firmware
+
+# Compiles the ESP32-S3 sketch with arduino-cli and publishes the flashable
+# binaries so the web flasher (GitHub Pages) can install them from a browser.
+# Runs on push to firmware/ and whenever you publish a GitHub Release.
+
+# (Push builds are handled by deploy-pages.yml. This one attaches signed .bin
+#  files to GitHub Releases so people can download them without the web flasher.)
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+env:
+  FQBN: esp32:esp32:XIAO_ESP32S3:PSRAM=opi,PartitionScheme=huge_app
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install arduino-cli
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | sh -s
+          echo "$PWD/bin" >> "$GITHUB_PATH"
+
+      - name: Install ESP32 core + libraries
+        run: |
+          arduino-cli config init
+          arduino-cli config add board_manager.additional_urls https://espressif.github.io/arduino-esp32/package_esp32_index.json
+          arduino-cli core update-index
+          arduino-cli core install esp32:esp32
+          arduino-cli lib install "U8g2"
+          arduino-cli lib install "WiFiManager"
+
+      - name: Compile
+        run: |
+          arduino-cli compile --fqbn "$FQBN" --export-binaries firmware/voicebot.ino
+
+      - name: Collect binaries for the web flasher
+        run: |
+          BUILD=$(find firmware/build -type d -name "esp32.esp32.*" | head -1)
+          echo "build dir: $BUILD"
+          mkdir -p web-flasher/firmware
+          cp "$BUILD"/voicebot.ino.bin            web-flasher/firmware/app.bin
+          cp "$BUILD"/voicebot.ino.bootloader.bin web-flasher/firmware/bootloader.bin
+          cp "$BUILD"/voicebot.ino.partitions.bin web-flasher/firmware/partitions.bin
+          # boot_app0 lives inside the installed core:
+          find ~/.arduino15 -name boot_app0.bin -exec cp {} web-flasher/firmware/boot_app0.bin \;
+          ls -la web-flasher/firmware
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: voicebuddy-firmware
+          path: web-flasher/firmware/*.bin
+
+      - name: Attach to release
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: web-flasher/firmware/*.bin

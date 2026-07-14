@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flash your Pabbly AI Desk Bot</title>
+<script type="module" src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js"></script>
+<style>
+  :root{
+    --bg:#f3f1ec;--panel:#fff;--ink:#181d1c;--ink2:#525d5b;--ink3:#8a9490;--line:#e0ddd4;
+    --copper:#b4622e;--board:#0f3a34;
+    --mono:ui-monospace,"Cascadia Code",Consolas,monospace;
+    --sans:"Segoe UI",system-ui,-apple-system,sans-serif;--display:Georgia,serif;
+  }
+  @media(prefers-color-scheme:dark){:root{
+    --bg:#0b1211;--panel:#101a18;--ink:#e9efed;--ink2:#9cadaa;--ink3:#5f6f6b;--line:#1e2b28;--copper:#e0975a;}}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6}
+  .wrap{max-width:640px;margin:0 auto;padding:56px 24px 80px}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--copper)}
+  h1{font-family:var(--display);font-weight:600;font-size:clamp(30px,6vw,46px);letter-spacing:-.02em;margin:14px 0 10px}
+  p{color:var(--ink2)}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:26px;text-align:center;margin:28px 0}
+  esp-web-install-button{--esp-tools-button-color:#fff;--esp-tools-button-background-color:var(--copper)}
+  ol{color:var(--ink2);padding-left:20px} li{margin:8px 0}
+  .note{font-size:13px;color:var(--ink3);font-family:var(--mono);margin-top:10px}
+  .warn{border-left:3px solid var(--copper);background:color-mix(in srgb,var(--copper) 8%,var(--panel));padding:14px 18px;border-radius:0 10px 10px 0;font-size:14px}
+  a{color:var(--copper)}
+  code{font-family:var(--mono);background:var(--panel);border:1px solid var(--line);padding:1px 6px;border-radius:5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">Pabbly AI Desk Bot</div>
+  <h1>Flash your device from the browser.</h1>
+  <p>Plug your XIAO ESP32-S3 into this computer with a USB-C cable, then click the button. No Arduino IDE needed — this installs the firmware directly over USB.</p>
+
+  <div class="card">
+    <esp-web-install-button manifest="./manifest.json">
+      <button slot="activate" style="font:600 15px var(--sans);background:var(--copper);color:#fff;border:0;padding:12px 22px;border-radius:10px;cursor:pointer">⚡ Connect &amp; Install</button>
+      <span slot="unsupported">Your browser can't flash devices. Use <b>Chrome</b> or <b>Edge</b> on a desktop.</span>
+      <span slot="not-allowed">You need to visit this page over <b>https</b>.</span>
+    </esp-web-install-button>
+    <div class="note">Chrome / Edge · desktop only · uses WebSerial</div>
+  </div>
+
+  <h3>After flashing</h3>
+  <ol>
+    <li>The device shows <b>"Join 'VoiceBuddy-Setup'"</b> — connect to that Wi-Fi on your phone.</li>
+    <li>Pick your home Wi-Fi and confirm the <b>Server URL</b> + <b>Device Token</b>.</li>
+    <li>It shows a <b>6-digit code</b> — enter it in the <a href="../dashboard">console</a> to claim the device.</li>
+    <li>Touch the pad and talk. That's it.</li>
+  </ol>
+
+  <div class="warn">
+    <b>If the button says "no binaries yet":</b> the firmware is built automatically by GitHub Actions.
+    Push the repo and let the <code>Deploy web flasher</code> action finish once — it compiles the
+    firmware and places the <code>.bin</code> files next to this page.
+  </div>
+</div>
+</body>
+</html>
