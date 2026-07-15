@@ -8,8 +8,8 @@
 
 // ---- Setup portal ----
 #define SETUP_AP_NAME     "Pabbly-Setup"        // Wi-Fi you join to configure the device
-#define DEFAULT_SERVER    "https://pabbly-ai-desk-bot.YOUR-SUBDOMAIN.workers.dev"  // no trailing slash
-#define DEFAULT_TOKEN     "choose-a-long-random-string"                            // must match Worker DEVICE_TOKEN
+#define DEFAULT_SERVER    "https://pabbly-ai-desk-bot-server.nimesh-sahu.workers.dev"  // no trailing slash
+#define DEFAULT_TOKEN     "choose-a-long-random-string"   // secret: leave placeholder, enter real DEVICE_TOKEN in the setup portal
 #define DEFAULT_BOT_NAME  "Pabbly"              // shown on standby until claimed/named on the site
 
 // ---- Pins (match the carrier board; XIAO ESP32-S3 labels shown) ----
