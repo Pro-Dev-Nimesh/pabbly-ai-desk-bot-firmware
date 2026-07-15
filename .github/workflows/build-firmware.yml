@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
 
 env:
-  FQBN: esp32:esp32:XIAO_ESP32S3:PSRAM=opi,PartitionScheme=huge_app
+  FQBN: esp32:esp32:XIAO_ESP32S3:PSRAM=opi
 
 jobs:
   build:
