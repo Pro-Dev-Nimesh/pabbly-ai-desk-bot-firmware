@@ -46,11 +46,11 @@ jobs:
           arduino-cli lib install "WiFiManager"
 
       - name: Compile firmware
-        run: arduino-cli compile --fqbn "$FQBN" --export-binaries firmware/voicebot.ino
+        run: arduino-cli compile --fqbn "$FQBN" --export-binaries firmware/voicebot
 
       - name: Stage flasher + binaries
         run: |
-          BUILD=$(find firmware/build -type d -name "esp32.esp32.*" | head -1)
+          BUILD=$(find firmware/voicebot/build -type d -name "esp32.esp32.*" | head -1)
           mkdir -p web-flasher/firmware
           cp "$BUILD"/voicebot.ino.bin            web-flasher/firmware/app.bin
           cp "$BUILD"/voicebot.ino.bootloader.bin web-flasher/firmware/bootloader.bin

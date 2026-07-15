@@ -7,8 +7,8 @@ so anyone can install it over USB without an IDE.
 > **pabbly-ai-desk-bot-server** (the Cloudflare Worker that does the auto-reply).
 
 ```
-firmware/       ESP32-S3 sketch (Wi-Fi setup portal + device claim + voice pipeline)
-web-flasher/    Browser flasher (ESP Web Tools) → GitHub Pages
+firmware/voicebot/   ESP32-S3 sketch (voicebot.ino + config.h)
+web-flasher/         Browser flasher (ESP Web Tools) → GitHub Pages
 .github/workflows/
   build-firmware.yml   builds firmware, attaches .bin to Releases
   deploy-pages.yml     builds firmware + publishes the flasher to GitHub Pages
@@ -32,8 +32,8 @@ Seeed **XIAO ESP32-S3** · **INMP441** I²S mic · **MAX98357A** amp + speaker �
 - Touch-to-talk (interim); the spoken **"Pabbly"** wake word is a later stage.
 
 ## Before you flash
-Open `firmware/config.h` and set:
-- `DEFAULT_SERVER` → your deployed Worker URL from **pabbly-ai-desk-bot-server** (e.g. `https://pabbly-ai-desk-bot.<you>.workers.dev`, no trailing slash)
+Open `firmware/voicebot/config.h` and set:
+- `DEFAULT_SERVER` → your deployed Worker URL from **pabbly-ai-desk-bot-server** (e.g. `https://pabbly-ai-desk-bot-server.<you>.workers.dev`, no trailing slash)
 - `DEFAULT_TOKEN`  → the same `DEVICE_TOKEN` you set on that Worker
 - `GMT_OFFSET_SEC` → your timezone offset for the standby clock (default +5:30 India)
 
@@ -43,8 +43,7 @@ open `https://<you>.github.io/pabbly-ai-desk-bot-firmware/`, plug in via USB-C, 
 *(GitHub Pages is free only on public repos.)*
 
 **B) Arduino IDE** — install the **ESP32** boards package + **U8g2** and **WiFiManager** libraries,
-open `firmware/voicebot.ino`, set **Tools → PSRAM → OPI PSRAM**, and Upload.
-*(PlatformIO: open `firmware/` and Upload.)*
+open `firmware/voicebot/voicebot.ino`, select board **XIAO_ESP32S3**, set **Tools → PSRAM → OPI PSRAM**, and Upload.
 
 ## First-time device setup (like Xiaozhi)
 1. Power on → the OLED says **"Join 'Pabbly-Setup'"**.
@@ -53,7 +52,7 @@ open `firmware/voicebot.ino`, set **Tools → PSRAM → OPI PSRAM**, and Upload.
 4. Touch the pad and talk. Re-open Wi-Fi setup later by holding the pad while powering on, or from the console's **Change Wi-Fi** button.
 
 ## Calibration
-Serial @ 115200. Tune `TOUCH_THRESHOLD` (watch the idle value) and `MIC_GAIN_SHIFT` (lower = louder) in `config.h`.
+Serial @ 115200. Tune `TOUCH_THRESHOLD` (watch the idle value) and `MIC_GAIN_SHIFT` (lower = louder) in `firmware/voicebot/config.h`.
 
 ## License
 MIT — see [LICENSE](LICENSE).

@@ -1,6 +1,5 @@
 # firmware build output
-firmware/build/
-firmware/.pio/
+firmware/voicebot/build/
 *.bin
 !web-flasher/firmware/*.bin
 

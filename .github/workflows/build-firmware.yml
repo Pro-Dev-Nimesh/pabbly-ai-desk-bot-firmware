@@ -36,11 +36,11 @@ jobs:
 
       - name: Compile
         run: |
-          arduino-cli compile --fqbn "$FQBN" --export-binaries firmware/voicebot.ino
+          arduino-cli compile --fqbn "$FQBN" --export-binaries firmware/voicebot
 
       - name: Collect binaries for the web flasher
         run: |
-          BUILD=$(find firmware/build -type d -name "esp32.esp32.*" | head -1)
+          BUILD=$(find firmware/voicebot/build -type d -name "esp32.esp32.*" | head -1)
           echo "build dir: $BUILD"
           mkdir -p web-flasher/firmware
           cp "$BUILD"/voicebot.ino.bin            web-flasher/firmware/app.bin
